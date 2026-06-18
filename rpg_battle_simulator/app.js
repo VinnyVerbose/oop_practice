@@ -130,21 +130,85 @@ class Battle{
     }
 
     fightRound(){
-        while(this.isFinished()){
-            this.fighter1.attack(this.fighter2);
-            this.fighter2.attack(this.fighter1);
-        }
-        this.getWinner();
+        
+        this.fighter1.attack(this.fighter2);
+        this.fighter2.attack(this.fighter1);
     }
 
     isFinished(){
-        return this.fighter1.health > 0 && this.fighter2.health > 0 ? true : false;
+        return this.fighter1.health <= 0 || this.fighter2.health <= 0;
     }
 
     getWinner(){
-        if(this.fighter1.health > 0){
+        if(this.fighter1.health > 0 && this.fighter2.health <= 0){
             return this.fighter1;
         }
-        return this.fighter2;
+        if(this.fighter2.health > 0 && this.fighter1.health <= 0){
+            return this.fighter2;
+        }
+    }
+}
+
+
+/*
+
+Now let's extend your design.
+
+Create a Warrior class that inherits from Character.
+
+A Warrior should have one additional ability:
+
+shieldBlock()
+
+You need to decide:
+
+What does shieldBlock actually do?
+Does it increase health?
+Reduce incoming damage?
+Grant temporary armor?
+Something else?
+
+There isn't a single correct answer.
+
+The important thing is that the Warrior gains additional behavior while still automatically having:
+
+attack()
+takeDamage()
+isAlive()
+
+from Character.
+
+Before writing code, think about where any new state should live.
+
+For example, if shield blocking lasts for a turn, does the Warrior need an extra property to remember that it's currently blocking?
+
+That's the kind of design question inheritance tends to introduce.
+
+*/
+
+class Warrior extends Character{
+    constructor(name, health, attackPower){
+        super(name, health, attackPower)
+            this.shieldDefensePower = .5;
+            this.isBlocking = false;
+    }
+
+    toggleShieldBlock(){
+        this.isBlocking = !this.isBlocking;
+    }
+
+    takeDamage(amount){
+        if(this.isAlive()){
+            if(this.isBlocking){
+                this.health = (this.health - amount) + (this.shieldDefensePower * amount);
+                this.toggleShieldBlock();
+            } else {
+                this.health -= amount;
+            }
+        }
+        
+        if(this.health < 0){
+            this.health = 0;
+        }
     }
 }
