@@ -1,28 +1,3 @@
-/*
-
-Great. We’ll start with Project 1: Bank Account.
-
-Goal: practice one class managing its own state.
-
-Build a BankAccount class with:
-
-owner
-balance
-deposit(amount)
-withdraw(amount)
-getBalance()
-
-Rules:
-
-deposit should increase balance
-withdraw should decrease balance
-withdraw should not allow balance to go below 0
-getBalance should return the current balance
-
-Try writing it first.
-
-*/
-
 class BankAccount{
     constructor(name, startingBalance){
         this.owner = name;
@@ -45,5 +20,12 @@ class BankAccount{
     getBalance(){
         return this.balance;
     }
-
 }
+
+const account = new BankAccount('Vinny', 100);
+
+console.log(account.owner) // 'Vinny'
+console.log(account.getBalance()) // 100
+
+account.deposit(50);
+console.log(account.getBalance()) // 150
